@@ -82,7 +82,7 @@ class Pkcs12Adapter(requests.adapters.HTTPAdapter):
             raise ValueError('Argument "pkcs12_data" conflicts with "pkcs12_filename"')
         if pkcs12_filename is not None:
             if isinstance(pkcs12_filename, bytes):
-                pkcs12_filename = base64.b64decode(pkcs12_filename)
+                pkcs12_data = base64.b64decode(pkcs12_filename)
         if pkcs12_password is None:
             pkcs12_password_bytes = None
         elif isinstance(pkcs12_password, bytes):
