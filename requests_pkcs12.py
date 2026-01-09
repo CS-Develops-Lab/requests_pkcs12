@@ -27,6 +27,7 @@ import requests.adapters
 import secrets
 import ssl
 import tempfile
+import base64
 
 try:
     from ssl import PROTOCOL_TLS_CLIENT as default_ssl_protocol
@@ -80,8 +81,8 @@ class Pkcs12Adapter(requests.adapters.HTTPAdapter):
         if pkcs12_data is not None and pkcs12_filename is not None:
             raise ValueError('Argument "pkcs12_data" conflicts with "pkcs12_filename"')
         if pkcs12_filename is not None:
-            with open(pkcs12_filename, 'rb') as pkcs12_file:
-                pkcs12_data = pkcs12_file.read()
+            if isinstance(pkcs12_filename, bytes):
+                pkcs12_filename = base64.b64decode(pkcs12_filename)
         if pkcs12_password is None:
             pkcs12_password_bytes = None
         elif isinstance(pkcs12_password, bytes):
